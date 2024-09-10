@@ -1,13 +1,17 @@
 import './App.css';
+import { Logo } from './components/logo';
 import { QrReader } from './components/qr-reader';
 
 function App() {
   return (
     <>
-      <h1>QR READER - REACT</h1>
-      <QrReader />
+      <Logo />
+     
+      <QrReader /> 
     </>
   );
 }
+
+
 
 export default App;
