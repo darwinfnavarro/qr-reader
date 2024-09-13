@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import QrScanner from 'qr-scanner';
-import QrFrame from '../assets/qr-frame.svg';
+import QrFrame from '../../assets/qr-frame.svg';
+import './qr-reader.styles.css';
 
-export function QrReader() {
+export interface QrReaderProps {
+  handleResult: (result: any) => void;
+}
+
+export function QrReader({ handleResult }: QrReaderProps) {
   const scanner = useRef<QrScanner>();
   const videoEl = useRef<HTMLVideoElement>(null);
   const qrBoxEl = useRef<HTMLDivElement>(null);
@@ -44,16 +49,32 @@ export function QrReader() {
 
   useEffect(() => {
     if (!qrOn)
-      alert('Camera is blocked or not accessible. Please allow camera in your browser permissions and Reload.');
+      alert(
+        'Camera is blocked or not accessible. Please allow camera in your browser permissions and Reload.'
+      );
   }, [qrOn]);
+
+  useEffect(() => {
+    if (scannedResult) {
+      if (handleResult) {
+        handleResult(scannedResult);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scannedResult]);
 
   return (
     <div className="qr-reader">
       <video ref={videoEl}></video>
       <div ref={qrBoxEl} className="qr-box">
-        <img src={QrFrame} alt="Qr Frame" width={256} height={256} className="qr-frame" />
+        <img
+          src={QrFrame}
+          alt="Qr Frame"
+          width={256}
+          height={256}
+          className="qr-frame"
+        />
       </div>
-      {scannedResult && <p>Scanned Result: {scannedResult}</p>}
     </div>
   );
 }

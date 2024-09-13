@@ -1,17 +1,16 @@
 import './App.css';
-import { Logo } from './components/logo';
-import { QrReader } from './components/qr-reader';
+import { Header } from './components/header/header';
+import { Home } from './pages/home';
 
 function App() {
   return (
-    <>
-      <Logo />
-     
-      <QrReader /> 
-    </>
+    <div>
+      <Header />
+      <main>
+        <Home />
+      </main>
+    </div>
   );
 }
-
-
 
 export default App;
