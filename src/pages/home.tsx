@@ -7,7 +7,7 @@ import { imeiQrServiceCreate } from '../services/imei-qr.service';
 export function Home() {
   const [result, setResult] = useState<string>();
   const [showQrReader, setShowQrReader] = useState<boolean>(false);
-  const [itemList, setItemList] = useState<any[]>([]);
+  const [lotsList, setLotsList] = useState<any[]>([]);
 
   const handleResult = (result: any) => {
     setResult(result);
@@ -22,8 +22,8 @@ export function Home() {
       }
 
       try {
-        const newData = await imeiQrServiceCreate(result); // Await the async function
-        console.log({ newData });
+        const newLots = await imeiQrServiceCreate(result); // Await the async function
+        setLotsList([...lotsList, newLots]);
       } catch (error) {
         console.error('Error creating data:', error);
       }
@@ -44,6 +44,14 @@ export function Home() {
       <button onClick={() => setShowQrReader(!showQrReader)} className="button">
         {showQrReader ? 'Close QR Reader' : 'Open QR Reader'}
       </button>
+
+      {lotsList && lotsList.length > 0 && (
+        <div className="lotsList">
+          {lotsList.map((lot, index) => (
+            <CardResult key={index} result={lot} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
