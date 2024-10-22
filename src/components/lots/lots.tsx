@@ -1,4 +1,4 @@
-import './card-result.styles.css';
+import '../card-result/card-result.styles.css';
 
 export interface LotsProps {
   items: {
