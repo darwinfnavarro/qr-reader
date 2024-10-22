@@ -14,7 +14,7 @@ export function CardResult({ result = defaultResult }: CardResultProps) {
       </div>
 
       <div className="cardBody">
-        <p>{result}</p>
+        <p>Value:</p> {result}
       </div>
     </div>
   );
