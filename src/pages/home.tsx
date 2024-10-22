@@ -14,15 +14,19 @@ export function Home() {
   };
 
   const onResult = useCallback(
-    (result: string) => {
+    async (result: string) => {
       setShowQrReader(false); // Ensure this state is in scope
 
       if (!result || typeof result !== 'string') {
         return;
       }
 
-      const newData = imeiQrServiceCreate(result);
-      console.log({ newData });
+      try {
+        const newData = await imeiQrServiceCreate(result); // Await the async function
+        console.log({ newData });
+      } catch (error) {
+        console.error('Error creating data:', error);
+      }
     },
     [setShowQrReader] // Add dependencies here
   );
