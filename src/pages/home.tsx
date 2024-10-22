@@ -3,6 +3,7 @@ import { QrReader } from '../components/qr-reader/qr-reader';
 import { CardResult } from '../components/card-result/card-result';
 import './styles/home.styles.css';
 import { imeiQrServiceCreate } from '../services/imei-qr.service';
+import { Lots } from '../components/lots/lots';
 
 export function Home() {
   const [result, setResult] = useState<string>();
@@ -45,13 +46,7 @@ export function Home() {
         {showQrReader ? 'Close QR Reader' : 'Open QR Reader'}
       </button>
 
-      {lotsList && lotsList.length > 0 && (
-        <div className="lotsList">
-          {lotsList.map((lot, index) => (
-            <CardResult key={index} result={lot} />
-          ))}
-        </div>
-      )}
+      {lotsList && lotsList.length > 0 && <Lots items={lotsList} />}
     </div>
   );
 }

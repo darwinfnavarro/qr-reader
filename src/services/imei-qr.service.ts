@@ -2,7 +2,7 @@ import { API_URL } from '../constants';
 
 export const imeiQrServiceCreate = async (
   imei: string
-): Promise<object | null> => {
+): Promise<any | null> => {
   if (!imei || typeof imei !== 'string') {
     return null;
   }
