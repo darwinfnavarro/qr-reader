@@ -10,8 +10,7 @@ export const imeiQrServiceCreate = async (
   try {
     const response = await fetch(`${API_URL}/api/v1/qr/${imei}`);
     const data = await response.json();
-    console.log(data);
-
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);

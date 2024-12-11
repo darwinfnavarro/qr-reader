@@ -24,7 +24,9 @@ export function Home() {
 
       try {
         const newLots = await imeiQrServiceCreate(result); // Await the async function
-        setLotsList([...lotsList, newLots]);
+        console.log({ newLots });
+
+        setLotsList(newLots);
       } catch (error) {
         console.error('Error creating data:', error);
       }
@@ -40,6 +42,7 @@ export function Home() {
 
   return (
     <div className="homeWrapper">
+      <h1>Home</h1>
       {showQrReader && <QrReader handleResult={handleResult} />}
       {result && <CardResult result={result} />}
       <button onClick={() => setShowQrReader(!showQrReader)} className="button">
