@@ -1,21 +1,17 @@
+import { IMEI } from '@/services';
 import './card-result.styles.css';
 
 export interface CardResultProps {
-  result: any;
+  item: IMEI;
 }
 
-const defaultResult = 'Scan a QR Code to get the result';
-
-export function CardResult({ result = defaultResult }: CardResultProps) {
+export function CardResult({ item }: CardResultProps) {
   return (
-    <div className="card">
-      <div className="cardHeader">
-        <p>Scanned Result</p>
-      </div>
-
-      <div className="cardBody">
-        <p>Value:</p> {result}
-      </div>
+    <div className="flex p-4 border-2 rounded-md">
+      <p>
+        {' '}
+        <span>IMEI</span>: {item?.imeiCode}
+      </p>
     </div>
   );
 }

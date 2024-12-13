@@ -10,8 +10,6 @@ export const getBodegas = async (): Promise<Option[] | undefined> => {
   try {
     const response: Bodega[] = (await axiosClient.get('/bodegas')).data;
 
-    console.log({ response });
-
     const newData: Option[] = response?.map((option) => ({
       label: option.nombre,
       value: option.id,

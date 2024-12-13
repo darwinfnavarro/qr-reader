@@ -4,11 +4,11 @@ export const imeiQrServiceCreate = async (
   imei: string
 ): Promise<any | null> => {
   if (!imei || typeof imei !== 'string') {
-    return null;
+    throw new Error('El IMEI es requerido');
   }
 
   try {
-    const response = await fetch(`${API_URL}/api/v1/qr/${imei}`);
+    const response = await fetch(`${API_URL}/producto/imei/${imei}`);
     const data = await response.json();
     // console.log(data);
     return data;

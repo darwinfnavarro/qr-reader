@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Option, SelectBase } from '../select/select-base';
 import { getPlatforms, getBodegas } from '../../services';
+import { qrSubject$, qrSubjectAction } from '../../subjects/qr.subject';
 
-const TripleSelect = () => {
+export const TripleSelect = () => {
+  const [show, setShow] = useState<boolean>(false);
   const [platforms, setPlatforms] = useState<Option[]>([]);
   const [bodegas, setBodegas] = useState<Option[]>([]);
 
   const onLoad = async () => {
     const platformsData = await getPlatforms();
-    console.log({ platformsData });
-
     setPlatforms(platformsData as Option[]);
 
     const bodegasData = await getBodegas();
@@ -17,10 +17,23 @@ const TripleSelect = () => {
   };
 
   useEffect(() => {
-    onLoad();
+    const subscription = qrSubject$
+      .getSubjectObservable()
+      .subscribe((action) => {
+        if (action === qrSubjectAction.CLOSE_QR) {
+          setShow(true);
+        } else {
+          setShow(false);
+        }
+      });
 
-    console.log('Platforms:', platforms);
-    console.log('Bodegas:', bodegas);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    onLoad();
   }, []);
 
   const handleSelectionPlatform = (value: string | number) => {
@@ -32,17 +45,23 @@ const TripleSelect = () => {
   };
 
   return (
-    <div className="flex gap-4">
-      <SelectBase
-        options={platforms}
-        handleSelection={handleSelectionPlatform}
-        label="Seleccionar plataforma"
-      />
-      <SelectBase
-        options={bodegas}
-        handleSelection={handleSelectionBodega}
-        label="Seleccionar bodega"
-      />
+    <div>
+      {show && (
+        <>
+          <div className="flex gap-4">
+            <SelectBase
+              options={platforms}
+              handleSelection={handleSelectionPlatform}
+              label="Seleccionar plataforma"
+            />
+            <SelectBase
+              options={bodegas}
+              handleSelection={handleSelectionBodega}
+              label="Seleccionar bodega"
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

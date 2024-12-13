@@ -6,28 +6,30 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 export interface Option {
-    value: string | number;
-    label: string;
+  value: string | number;
+  label: string;
 }
 
 interface SelectBaseProps {
-    options: Option[];
-    handleSelection: (value: string | number) => void;
-    label?: string;
-    defaultValue?: string | number;
-    fullWidth?: boolean;
-    minWidth?: number;
+  options: Option[];
+  handleSelection: (value: string | number) => void;
+  label?: string;
+  defaultValue?: string | number;
+  fullWidth?: boolean;
+  minWidth?: number;
 }
 
 export function SelectBase({
-    options, 
-    handleSelection, 
-    label = 'Seleccione una opción', 
-    defaultValue = '', 
-    fullWidth = true, 
-    minWidth = 300 
+  options,
+  handleSelection,
+  label = 'Seleccione una opción',
+  defaultValue = '',
+  fullWidth = true,
+  minWidth = 300,
 }: SelectBaseProps) {
-  const [value, setValue] = React.useState<string | number | undefined>(defaultValue);
+  const [value, setValue] = React.useState<string | number | undefined>(
+    defaultValue
+  );
 
   const handleChange = (event: SelectChangeEvent) => {
     const selectedValue = event.target.value as string | number;
