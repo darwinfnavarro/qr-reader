@@ -1,24 +1,24 @@
-import { Option } from "../components/select/select-base";
-import { axiosClient } from "./axios-client";
+import { Option } from '../components/select/select-base';
+import { axiosClient } from './axios-client';
 
 interface Bodega {
-    id: number;
-    nombre: string
+  id: number;
+  nombre: string;
 }
-
 
 export const getBodegas = async (): Promise<Option[] | undefined> => {
+  try {
+    const response: Bodega[] = (await axiosClient.get('/bodegas')).data;
 
-    try {
-        const response: Bodega[] = await axiosClient.get('/bodegas'); 
-        const newData: Option[] = response?.map((option) => ({
-            label: option.nombre,
-            value: option.id
-        }))
+    console.log({ response });
 
-        return newData;
+    const newData: Option[] = response?.map((option) => ({
+      label: option.nombre,
+      value: option.id,
+    }));
 
-    } catch (error) {
-        // console.log(error)
-    }
-}
+    return newData;
+  } catch (error) {
+    console.log(error);
+  }
+};
