@@ -11,14 +11,12 @@ export interface TableProps {
     imei: string[];
     bodega: string;
     service: string;
+    date: string; // Asegúrate de que 'date' sea un string que representa una fecha
   }[];
   onClick?: (row: any) => void;
 }
 
-export const TableBase: React.FC<TableProps> = ({
-  rows,
-  onClick = () => {},
-}) => {
+export const TableBase: React.FC<TableProps> = ({ rows }) => {
   const pageSizeOptions = [5, 10, 15];
 
   const handleRowClickImei = (row: any) => {
@@ -27,6 +25,13 @@ export const TableBase: React.FC<TableProps> = ({
     loteImeiSubject$.open({ listOfImeis, loteId });
   };
 
+  // Asegúrate de que las fechas estén ordenadas antes de pasarlas a DataGrid
+  const sortedRows = [...rows].sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA; // Orden descendente
+  });
+
   const columns = [
     {
       field: 'loteId',
@@ -34,7 +39,6 @@ export const TableBase: React.FC<TableProps> = ({
       width: 100,
       renderCell: (params: GridRenderCellParams) => <ul>{params.value}</ul>,
     },
-
     {
       field: 'IMEI',
       type: 'actions',
@@ -79,10 +83,13 @@ export const TableBase: React.FC<TableProps> = ({
       disableRowSelectionOnClick
       getRowId={(row) => row.id ?? `${row.loteId}-${row.imei}`}
       initialState={{
-        pagination: { paginationModel: { pageSize: 5 } },
+        pagination: { paginationModel: { pageSize: 10 } },
+        sorting: {
+          sortModel: [{ field: 'date', sort: 'desc' }], // Orden descendente por la fecha
+        },
       }}
       pageSizeOptions={pageSizeOptions}
-      rows={rows}
+      rows={sortedRows}
     />
   );
 };

@@ -21,8 +21,6 @@ export function Home() {
     bodega: '',
   });
 
-  console.log({ platforms, bodegas });
-
   const onLoadOptions = async () => {
     const platformsData = await getPlatforms();
     setPlatforms(platformsData as Option[]);
@@ -43,8 +41,6 @@ export function Home() {
     platform: string | number,
     bodega: string | number
   ) => {
-    console.log({ platform, bodega });
-
     setSelectionOptions({
       platform,
       bodega,
@@ -52,9 +48,6 @@ export function Home() {
   };
 
   const onSubmit = async () => {
-    console.log('Enviar nuevo lote');
-    console.log('selectionOptions', selectionOptions);
-
     if (listOfIMEI.length === 0) {
       toast.error('No hay IMEI para enviar', {
         duration: 4000,

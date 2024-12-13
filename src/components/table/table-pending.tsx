@@ -12,6 +12,7 @@ export interface TablePendingProps {
     imei: string[];
     bodega: string;
     service: string;
+    date: string; // Asegúrate de que 'date' sea un string que representa una fecha
   }[];
   onClick?: (row: any) => void;
 }
@@ -34,6 +35,13 @@ export const TablePending: React.FC<TablePendingProps> = ({ rows }) => {
     const loteId = row.loteId;
     loteImeiSubject$.open({ listOfImeis, loteId });
   };
+
+  // Asegúrate de que las fechas estén ordenadas antes de pasarlas a DataGrid
+  const sortedRows = [...rows].sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA; // Orden descendente
+  });
 
   const columns = [
     {
@@ -112,10 +120,13 @@ export const TablePending: React.FC<TablePendingProps> = ({ rows }) => {
       disableRowSelectionOnClick
       getRowId={(row) => row.id ?? `${row.loteId}-${row.imei}`}
       initialState={{
-        pagination: { paginationModel: { pageSize: 5 } },
+        pagination: { paginationModel: { pageSize: 10 } },
+        sorting: {
+          sortModel: [{ field: 'date', sort: 'desc' }], // Orden descendente por la fecha
+        },
       }}
       pageSizeOptions={pageSizeOptions}
-      rows={rows}
+      rows={sortedRows}
     />
   );
 };

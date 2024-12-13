@@ -28,7 +28,6 @@ export const DoubleSelect = ({
 
   useEffect(() => {
     if (handleSelectionOptions) {
-      console.log({ platform, bodega });
       handleSelectionOptions(platform, bodega);
     }
   }, [platform, bodega]);

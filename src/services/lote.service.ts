@@ -1,4 +1,5 @@
 import { axiosClient } from './axios-client.service';
+import { format } from 'date-fns';
 
 export interface Lote {
   loteId: string;
@@ -14,7 +15,7 @@ export const loteAdapter = (lote: Lote) => {
     imei: [lote.imei],
     bodega: lote?.nombreBodega,
     service: lote?.descripcionServicio,
-    date: lote?.fechaRegistro,
+    date: format(lote?.fechaRegistro, 'yyyy-MM-dd HH:mm:ss'),
   };
 };
 
