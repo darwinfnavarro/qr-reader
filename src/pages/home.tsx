@@ -4,6 +4,8 @@ import { CardResult } from '../components/card-result/card-result';
 import './styles/home.styles.css';
 import { imeiQrServiceCreate } from '../services/imei-qr.service';
 import { Lots } from '../components/lots/lots';
+import {SelectBase} from '../components/select/select-base';
+import { getPlatforms, getBodegas } from '../services';
 
 export function Home() {
   const [result, setResult] = useState<string>();
@@ -40,6 +42,21 @@ export function Home() {
     }
   }, [result]);
 
+  useEffect(() => {
+    getPlatforms()
+    getBodegas()
+  },[])
+
+  const optionsPlatform = [
+    {label: '1', value: 1},
+    {label: '2', value: 2}
+
+  ]
+
+  const handleSelectionPlatform = (value: string | number) => {
+    console.log({newValue: value})
+  }
+
   return (
     <div className="homeWrapper">
       <h1>Home</h1>
@@ -50,6 +67,9 @@ export function Home() {
       </button>
 
       {lotsList && lotsList.length > 0 && <Lots items={lotsList} />}
+      <SelectBase options={optionsPlatform} handleSelection={handleSelectionPlatform} label='Seleccionar plataforma'/>
+      <SelectBase options={optionsPlatform} handleSelection={handleSelectionPlatform} label='Seleccionar plataforma'/>
+
     </div>
   );
 }
