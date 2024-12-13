@@ -1,15 +1,16 @@
 import React from 'react';
 import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
-import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Button } from '@mui/material';
+import { loteImeiSubject$ } from '@/subjects/lote-imei.subject';
+import { QrCode } from '@mui/icons-material';
 
 export interface TableProps {
   rows: {
     id: number;
-    loteId?: string;
-    imei?: string;
-    bodega?: string;
-    service?: string;
+    loteId: string;
+    imei: string[];
+    bodega: string;
+    service: string;
   }[];
   onClick?: (row: any) => void;
 }
@@ -20,39 +21,37 @@ export const TableBase: React.FC<TableProps> = ({
 }) => {
   const pageSizeOptions = [5, 10, 15];
 
-  const handleRowClick = (row: any) => {
-    onClick(row);
+  const handleRowClickImei = (row: any) => {
+    const listOfImeis = row.imei;
+    const loteId = row.loteId;
+    loteImeiSubject$.open({ listOfImeis, loteId });
   };
 
   const columns = [
     {
-      field: 'actions',
+      field: 'loteId',
+      headerName: 'ID',
+      width: 100,
+      renderCell: (params: GridRenderCellParams) => <ul>{params.value}</ul>,
+    },
+
+    {
+      field: 'IMEI',
       type: 'actions',
       sortable: false,
-      headerName: 'Actions',
-      width: 80,
+      headerName: 'IMEI',
+      width: 200,
       renderCell: (params: GridRenderCellParams) => (
-        <IconButton
+        <Button
           color="secondary"
           aria-label="delete row"
-          onClick={() => handleRowClick(params.row)}
+          onClick={() => handleRowClickImei(params.row)}
+          variant="contained"
+          endIcon={<QrCode />}
         >
-          <DeleteIcon />
-        </IconButton>
+          Ver listado de IMEI
+        </Button>
       ),
-    },
-    {
-      field: 'loteId',
-      headerName: 'Lote ID',
-      flex: 1,
-      minWidth: 150,
-      renderCell: (params: GridRenderCellParams) => <>{params.value}</>,
-    },
-    {
-      field: 'imei',
-      headerName: 'IMEI',
-      flex: 1,
-      renderCell: (params: GridRenderCellParams) => <>{params.value}</>,
     },
     {
       field: 'bodega',
@@ -62,7 +61,13 @@ export const TableBase: React.FC<TableProps> = ({
     },
     {
       field: 'service',
-      headerName: 'Service',
+      headerName: 'Plataforma',
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => <>{params.value}</>,
+    },
+    {
+      field: 'date',
+      headerName: 'Fecha de Registro',
       flex: 1,
       renderCell: (params: GridRenderCellParams) => <>{params.value}</>,
     },
@@ -70,7 +75,6 @@ export const TableBase: React.FC<TableProps> = ({
 
   return (
     <DataGrid
-      autoHeight
       columns={columns}
       disableRowSelectionOnClick
       getRowId={(row) => row.id ?? `${row.loteId}-${row.imei}`}

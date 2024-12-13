@@ -7,5 +7,7 @@ export const sendLoteImeiService = async (
     await axiosClient.post('/registros/bulk', [...loteIMEI]);
   } catch (error) {
     console.error(error);
+  } finally {
+    window.location.reload();
   }
 };

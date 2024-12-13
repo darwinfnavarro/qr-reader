@@ -9,7 +9,7 @@ function App() {
         <Header />
         <main className="w-full">
           <div className="main w-full">
-            <div className="max-w-3xl mx-auto p-8">
+            <div className="w-full p-8">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="solicitudes" element={<Requests />} />
