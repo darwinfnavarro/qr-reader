@@ -50,27 +50,27 @@ export function Home() {
   const onSubmit = async () => {
     if (listOfIMEI.length === 0) {
       toast.error('No hay IMEI para enviar', {
-        duration: 4000,
+        duration: 5000,
         id: 'imei-error',
-        position: 'bottom-right',
+        position: 'top-right',
       });
       return;
     }
 
     if (!selectionOptions.platform) {
       toast.error('Seleccione una plataforma', {
-        duration: 4000,
+        duration: 5000,
         id: 'platform-error',
-        position: 'bottom-right',
+        position: 'top-right',
       });
       return;
     }
 
     if (!selectionOptions.bodega) {
       toast.error('Seleccione una bodega', {
-        duration: 4000,
+        duration: 5000,
         id: 'bodega-error',
-        position: 'bottom-right',
+        position: 'top-right',
       });
       return;
     }
@@ -82,16 +82,16 @@ export function Home() {
     try {
       sendLoteImeiService(newLoteIMEI as any);
       toast.success('Lote enviado correctamente', {
-        duration: 4000,
+        duration: 5000,
         id: 'imei-success',
-        position: 'bottom-right',
+        position: 'top-right',
       });
     } catch (error) {
       console.error(error);
       toast.error('Error al enviar lote', {
-        duration: 4000,
+        duration: 5000,
         id: 'imei-error',
-        position: 'bottom-right',
+        position: 'top-right',
       });
     } finally {
       setListOfIMEI([]);
