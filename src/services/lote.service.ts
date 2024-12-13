@@ -50,7 +50,9 @@ export const getPendingLotes = async (): Promise<Lote[]> => {
 export const getAuthorizedLotes = async (): Promise<Lote[]> => {
   try {
     const response = await axiosClient.get('/registros/autorizados');
-    return response.data?.map(loteAdapter);
+    const unifiedLotes = unifyDuplicateLotes(response.data?.map(loteAdapter));
+
+    return unifiedLotes;
   } catch (error) {
     console.error('Error fetching authorized lotes:', error);
     throw error;
@@ -60,7 +62,9 @@ export const getAuthorizedLotes = async (): Promise<Lote[]> => {
 export const getRejectedLotes = async (): Promise<Lote[]> => {
   try {
     const response = await axiosClient.get('/registros/rechazados');
-    return response.data?.map(loteAdapter);
+    const unifiedLotes = unifyDuplicateLotes(response.data?.map(loteAdapter));
+
+    return unifiedLotes;
   } catch (error) {
     console.error('Error fetching rejected lotes:', error);
     throw error;
