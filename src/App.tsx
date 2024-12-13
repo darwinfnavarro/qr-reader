@@ -1,15 +1,21 @@
-import './App.css';
-import { Header } from './components/header/header';
-import { Home } from './pages/home';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home, Requests } from '@/pages';
+import { Header, Footer } from './components/header/header';
 
 function App() {
   return (
-    <div className="w-full">
-      <Header />
-      <main className="w-full">
-        <Home />
-      </main>
-    </div>
+    <main className="w-full flex flex-col">
+      <Router>
+        <Header />
+        <main className="w-full max-w-3xl mx-auto p-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="solicitudes" element={<Requests />} />
+          </Routes>
+        </main>
+        <Footer />
+      </Router>
+    </main>
   );
 }
 

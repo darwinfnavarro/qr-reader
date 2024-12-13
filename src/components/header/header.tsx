@@ -1,17 +1,18 @@
-import LogoImage from '../../assets/logo_rastreolax.png';
+import { Link } from 'react-router-dom';
 
 export function Header() {
   return (
-    <header className="header">
-      <h1>Lector IMEI </h1>
-
-      <img
-        src={LogoImage}
-        alt="LAXGPS"
-        width={256}
-        height={256}
-        className="logoCompany"
-      />
+    <header className="w-full border-b-2 border-t-0 border-slate-200 p-4">
+      <nav className="max-w-3xl mx-auto">
+        <ul className="flex gap-12 justify-center">
+          <li>
+            <Link to="/">Lector QR</Link>
+          </li>
+          <li>
+            <Link to="/solicitudes">Solicitudes</Link>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }
