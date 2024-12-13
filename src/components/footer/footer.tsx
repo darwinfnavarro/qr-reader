@@ -2,7 +2,7 @@ import LogoImage from '../../assets/logo_rastreolax.png';
 
 export const Footer = () => {
   return (
-    <footer className="border-t-2 border-slate-200 py-4 px-4 absolute bottom-0 w-full flex justify-center">
+    <footer className="border-t-2 border-slate-200 py-4 px-4 absolute bottom-0 w-full flex justify-center bg-white">
       <img
         src={LogoImage}
         alt="LAXGPS"
