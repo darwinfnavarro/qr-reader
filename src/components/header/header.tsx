@@ -3,7 +3,7 @@ import LogoImage from '../../assets/logo_rastreolax.png';
 export function Header() {
   return (
     <header className="header">
-      <h1>QR Reader</h1>
+      <h1>Lector IMEI </h1>
 
       <img
         src={LogoImage}

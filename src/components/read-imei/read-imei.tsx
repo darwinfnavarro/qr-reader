@@ -1,12 +1,42 @@
 import { useCallback, useEffect, useState } from 'react';
-import { qrSubject$ } from '@/subjects';
+import { qrSubject$, qrSubjectAction } from '@/subjects';
 import { IMEI, readQrService } from '@/services';
-import { CardResult, QrReader } from '@/components';
+import { QrReader } from '@/components';
+import { Button } from '@mui/material';
+import { Close, QrCode } from '@mui/icons-material';
 
-export const ReadIMEI = () => {
+interface ReadIMEIProps {
+  handleListOfIMEI: (list: IMEI[]) => void;
+}
+
+export const ReadIMEI = ({ handleListOfIMEI }: ReadIMEIProps) => {
   const [result, setResult] = useState<string>();
   const [showQrReader, setShowQrReader] = useState<boolean>(false);
-  const [listOfIMEI, setListOfIMEI] = useState<IMEI[] | undefined>([]);
+  const [listOfIMEI, setListOfIMEI] = useState<IMEI[]>([]);
+
+  const handleResult = (result: string) => {
+    setResult(result);
+  };
+
+  const onResult = useCallback(async (result: string) => {
+    if (!result || typeof result !== 'string') {
+      return;
+    }
+
+    try {
+      const foundIMEI = await readQrService(result);
+      setListOfIMEI((prevList) => {
+        if (prevList.some((item) => item.id === foundIMEI.id)) {
+          return prevList;
+        }
+        return [...prevList, foundIMEI];
+      });
+    } catch (error) {
+      console.error('Error creating data:', error);
+    } finally {
+      qrSubject$.closeQR();
+    }
+  }, []);
 
   useEffect(() => {
     if (result) {
@@ -14,53 +44,54 @@ export const ReadIMEI = () => {
     }
   }, [result]);
 
-  const handleResult = (result: any) => {
-    setResult(result);
-  };
+  useEffect(() => {
+    if (handleListOfIMEI) {
+      handleListOfIMEI(listOfIMEI);
+    }
+  }, [listOfIMEI]);
 
-  const onResult = useCallback(
-    async (result: string) => {
-      setShowQrReader(false); // Ensure this state is in scope
-
-      if (!result || typeof result !== 'string') {
-        return;
-      }
-
-      try {
-        const foundIMEI = await readQrService(result);
-        setListOfIMEI((prevList: IMEI[] | undefined) => {
-          if (prevList.some((item) => item.id === foundIMEI.id)) {
-            console.warn('Duplicate IMEI detected:', foundIMEI);
-            return prevList; // Return the previous list unchanged
-          }
-          return [...prevList, foundIMEI]; // Add new IMEI
-        });
-      } catch (error) {
-        console.error('Error creating data:', error);
-      } finally {
-        qrSubject$.closeQR();
-      }
-    },
-    [setShowQrReader] // Add dependencies here
-  );
+  useEffect(() => {
+    const subscription = qrSubject$
+      .getSubjectObservable()
+      .subscribe((action) => {
+        if (action === qrSubjectAction.OPEN_QR) {
+          setShowQrReader(true);
+        } else {
+          setShowQrReader(false);
+        }
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      {showQrReader ? (
+        <Button
+          onClick={() => qrSubject$.closeQR()}
+          variant="contained"
+          endIcon={<Close />}
+          style={{
+            padding: '10px 20px',
+          }}
+        >
+          Cerrar lector QR
+        </Button>
+      ) : (
+        <Button
+          onClick={() => qrSubject$.openQR()}
+          variant="contained"
+          endIcon={<QrCode />}
+          style={{
+            padding: '10px 20px',
+          }}
+        >
+          Abrir lector QR
+        </Button>
+      )}
+
       {showQrReader && <QrReader handleResult={handleResult} />}
-
-      <ul>
-        {listOfIMEI?.map((item, index) => (
-          <li key={index} className="py-1">
-            <CardResult item={item} />
-          </li>
-        ))}
-      </ul>
-
-      <button onClick={() => setShowQrReader(!showQrReader)} className="button">
-        {showQrReader ? 'Close QR Reader' : 'Open QR Reader'}
-      </button>
     </div>
   );
 };
-
-export default ReadIMEI;

@@ -1,5 +1,5 @@
 import { Option } from '../components/select/select-base';
-import { axiosClient } from './axios-client';
+import { axiosClient } from './axios-client.service';
 
 interface Bodega {
   id: number;

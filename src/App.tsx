@@ -4,9 +4,9 @@ import { Home } from './pages/home';
 
 function App() {
   return (
-    <div>
+    <div className="w-full">
       <Header />
-      <main>
+      <main className="w-full">
         <Home />
       </main>
     </div>
