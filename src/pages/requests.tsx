@@ -86,10 +86,10 @@ export const Requests = () => {
           <TablePending rows={pending} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <TableBase rows={rejected} />
+          <TableBase rows={approved} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
-          <TableBase rows={approved} />
+          <TableBase rows={rejected} />
         </CustomTabPanel>
       </Box>
 
