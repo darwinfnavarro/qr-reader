@@ -11,8 +11,6 @@ export function Header({ user }: { user: User | null }) {
       : 'text-slate-700';
   };
 
-  console.log({ userInHeader: user });
-
   return (
     <header className="w-full border-b-2 border-t-0 border-slate-200 p-4 bg-white shadow-md">
       <nav className="max-w-3xl mx-auto">
