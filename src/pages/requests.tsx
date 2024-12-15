@@ -11,6 +11,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { User } from '@/models';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -41,7 +42,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-export const Requests = () => {
+export const Requests = ({ user }: { user: User | null }) => {
   const [pending, setPending] = useState<Lote[] | []>([]);
   const [approved, setApproved] = useState<Lote[] | []>([]);
   const [rejected, setRejected] = useState<Lote[] | []>([]);
@@ -83,7 +84,7 @@ export const Requests = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <TablePending rows={pending} />
+          <TablePending rows={pending} user={user} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TableBase rows={approved} />

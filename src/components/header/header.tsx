@@ -28,19 +28,16 @@ export function Header({ user }: { user: User | null }) {
             </li>
           )}
 
-          {user &&
-            user.role === 'admin' && ( // Verifica si el usuario es admin
-              <li>
-                <Link
-                  to="/solicitudes"
-                  className={`text-lg font-semibold hover:text-blue-500 transition duration-300 ${isActive(
-                    '/solicitudes'
-                  )}`}
-                >
-                  Solicitudes
-                </Link>
-              </li>
-            )}
+          <li>
+            <Link
+              to="/solicitudes"
+              className={`text-lg font-semibold hover:text-blue-500 transition duration-300 ${isActive(
+                '/solicitudes'
+              )}`}
+            >
+              Solicitudes
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>

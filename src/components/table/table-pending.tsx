@@ -4,6 +4,7 @@ import { Button, IconButton } from '@mui/material';
 import { loteImeiSubject$ } from '@/subjects/lote-imei.subject';
 import { Check, Clear, QrCode } from '@mui/icons-material';
 import { authorizeLote, rejectLote } from '@/services/lote.service';
+import { User } from '@/models';
 
 export interface TablePendingProps {
   rows: {
@@ -15,9 +16,10 @@ export interface TablePendingProps {
     date: string; // Asegúrate de que 'date' sea un string que representa una fecha
   }[];
   onClick?: (row: any) => void;
+  user: User;
 }
 
-export const TablePending: React.FC<TablePendingProps> = ({ rows }) => {
+export const TablePending: React.FC<TablePendingProps> = ({ user, rows }) => {
   const pageSizeOptions = [5, 10, 15];
 
   const handleRowClickAuthorize = async (row: any) => {
@@ -43,14 +45,13 @@ export const TablePending: React.FC<TablePendingProps> = ({ rows }) => {
     return dateB - dateA; // Orden descendente
   });
 
-  const columns = [
+  const defaultColumns = [
     {
       field: 'loteId',
       headerName: 'ID',
       width: 100,
       renderCell: (params: GridRenderCellParams) => <ul>{params.value}</ul>,
     },
-
     {
       field: 'IMEI',
       type: 'actions',
@@ -114,9 +115,17 @@ export const TablePending: React.FC<TablePendingProps> = ({ rows }) => {
     },
   ];
 
+  const columns = () => {
+    if (user.role === 'admin') {
+      return defaultColumns;
+    }
+
+    return defaultColumns.filter((column) => column.field !== 'Response');
+  };
+
   return (
     <DataGrid
-      columns={columns}
+      columns={columns()}
       disableRowSelectionOnClick
       getRowId={(row) => row.id ?? `${row.loteId}-${row.imei}`}
       initialState={{

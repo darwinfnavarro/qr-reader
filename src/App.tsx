@@ -54,7 +54,12 @@ function App() {
             />
             <Route
               path="solicitudes"
-              element={<ProtectedRoute element={<Requests />} user={user} />}
+              element={
+                <ProtectedRoute
+                  element={<Requests user={user} />}
+                  user={user}
+                />
+              }
             />
           </Route>
           <Route path="login" element={<Login addUser={addUser} />} />
