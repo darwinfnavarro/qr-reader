@@ -99,7 +99,7 @@ export function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full">
+    <div className="flex flex-col gap-8 w-full p-8">
       <ReadIMEI handleListOfIMEI={handleListOfIMEI} />
 
       {listOfIMEI.length > 0 && (

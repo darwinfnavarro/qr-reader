@@ -67,7 +67,7 @@ export const Requests = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-8">
       <h1>Solicitudes</h1>
 
       <Box sx={{ width: '100%' }}>
