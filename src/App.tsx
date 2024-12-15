@@ -7,24 +7,20 @@ import {
 } from 'react-router-dom';
 import { Home, Login, Requests } from '@/pages';
 import { Header, Footer } from '@/components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User } from './models';
 import { Toaster } from 'react-hot-toast';
 
-const ProtectedRoute = ({
-  element,
+const Layout = ({
   user,
+  removeUser,
 }: {
-  element: JSX.Element;
   user: User | null;
+  removeUser: () => void;
 }) => {
-  return user ? element : <Navigate to="/login" replace />;
-};
-
-const Layout = ({ user }: { user: User | null }) => {
   return (
     <>
-      <Header user={user} />
+      <Header user={user} removeUser={removeUser} />
       <main className="w-full">
         <div className="main w-full">
           <Outlet />
@@ -39,28 +35,41 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
 
   const addUser = (user: User) => {
+    localStorage.setItem('user', JSON.stringify(user));
     setUser(user);
   };
+
+  const removeUser = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []); // Solo se ejecuta una vez al montar el componente
+
+  console.log({ user });
 
   return (
     <main className="w-full flex flex-col">
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route element={<Layout user={user} />}>
-            <Route
-              path="qr-reader"
-              element={<ProtectedRoute element={<Home />} user={user} />}
-            />
-            <Route
-              path="solicitudes"
-              element={
-                <ProtectedRoute
-                  element={<Requests user={user} />}
-                  user={user}
-                />
-              }
-            />
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Navigate to="/solicitudes" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route element={<Layout user={user} removeUser={removeUser} />}>
+            <Route path="qr-reader" element={<Home />} />
+            <Route path="solicitudes" element={<Requests user={user} />} />
           </Route>
           <Route path="login" element={<Login addUser={addUser} />} />
         </Routes>

@@ -1,8 +1,16 @@
 import { User } from '@/models';
-import { Link, useLocation } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-export function Header({ user }: { user: User | null }) {
+export function Header({
+  user,
+  removeUser,
+}: {
+  user: User | null;
+  removeUser: () => void;
+}) {
   const location = useLocation(); // Obtiene la ubicación actual
+  const navigate = useNavigate();
 
   // Función para determinar si el enlace es activo
   const isActive = (path: string) => {
@@ -11,9 +19,15 @@ export function Header({ user }: { user: User | null }) {
       : 'text-slate-700';
   };
 
+  const onSignOut = () => {
+    navigate('/login');
+
+    removeUser();
+  };
+
   return (
     <header className="w-full border-b-2 border-t-0 border-slate-200 p-4 bg-white shadow-md">
-      <nav className="max-w-3xl mx-auto">
+      <nav className="max-w-3xl mx-auto flex items-center justify-between w-full">
         <ul className="flex gap-12 justify-center">
           {user?.role === 'tecnico' && (
             <li>
@@ -39,6 +53,17 @@ export function Header({ user }: { user: User | null }) {
             </Link>
           </li>
         </ul>
+
+        <div>
+          <Button
+            onClick={() => onSignOut()}
+            className={`text-lg font-semibold hover:text-blue-500 transition duration-300 ${isActive(
+              '/solicitudes'
+            )}`}
+          >
+            Cerrar sesion
+          </Button>
+        </div>
       </nav>
     </header>
   );

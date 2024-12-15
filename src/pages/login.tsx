@@ -44,7 +44,7 @@ export const Login = ({ addUser }: LoginProps) => {
     if (!userFound) {
       toast.error('Usuario no encontrado', {
         duration: 4000,
-        position: 'top-right',
+        position: 'top-center',
         id: 'error-user-not-found',
       });
       return;
@@ -52,13 +52,13 @@ export const Login = ({ addUser }: LoginProps) => {
 
     addUser(userFound);
 
-    toast.success(`Bienvenido ${userFound.role}`, {
+    toast.success(`Bienvenido ${userFound?.role}`, {
       duration: 4000,
-      position: 'top-right',
+      position: 'top-center',
       id: 'success-login',
     });
 
-    if (userFound.role === 'admin') {
+    if (userFound?.role === 'admin') {
       navigate('/solicitudes');
     } else {
       navigate('/qr-reader');

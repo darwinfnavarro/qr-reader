@@ -52,7 +52,7 @@ export function Home() {
       toast.error('No hay IMEI para enviar', {
         duration: 5000,
         id: 'imei-error',
-        position: 'top-right',
+        position: 'top-center',
       });
       return;
     }
@@ -61,7 +61,7 @@ export function Home() {
       toast.error('Seleccione una plataforma', {
         duration: 5000,
         id: 'platform-error',
-        position: 'top-right',
+        position: 'top-center',
       });
       return;
     }
@@ -70,7 +70,7 @@ export function Home() {
       toast.error('Seleccione una bodega', {
         duration: 5000,
         id: 'bodega-error',
-        position: 'top-right',
+        position: 'top-center',
       });
       return;
     }
@@ -84,14 +84,14 @@ export function Home() {
       toast.success('Lote enviado correctamente', {
         duration: 5000,
         id: 'imei-success',
-        position: 'top-right',
+        position: 'top-center',
       });
     } catch (error) {
       console.error(error);
       toast.error('Error al enviar lote', {
         duration: 5000,
         id: 'imei-error',
-        position: 'top-right',
+        position: 'top-center',
       });
     } finally {
       setListOfIMEI([]);

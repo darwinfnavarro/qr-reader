@@ -116,7 +116,7 @@ export const TablePending: React.FC<TablePendingProps> = ({ user, rows }) => {
   ];
 
   const columns = () => {
-    if (user.role === 'admin') {
+    if (user?.role === 'admin') {
       return defaultColumns;
     }
 
